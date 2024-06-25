@@ -392,6 +392,12 @@ The system uses a straightforward circuit design with minimal wiring, only three
 
 To ensure the consistency and reliability of the autonomous ball in maze solving robot system, rigorous testing was conducted across various conditions and scenarios. The testing process included ball detection, maze layout detection, path planning and maze solving.
 
+
+
+https://github.com/Avvienash/Maze-Solving-Robot/assets/66234703/1e7a9965-980b-430a-a04a-20146ce0331e
+
+
+
 **Ball Detection Testing:**
 
 Ball detection capabilities were evaluated under different lighting conditions and random platform orientations. The testing involved 20 runs each for scenarios with and without the ball, assessing the system's ability to accurately detect the ball.
