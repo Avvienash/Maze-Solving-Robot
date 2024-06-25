@@ -1,6 +1,9 @@
 # Ball-In-Maze Solving Robot
 
-![](Images/image000.png)
+<p align="center">
+  <img src="Images/image000.png" height= auto
+  width = 100%>
+</p>
 
 
 ## Summary
@@ -35,7 +38,9 @@ For the detailed explanations please refer to the full report.
 
 ## Specifications and Approach
 
-![](Images/image001.png)
+<p align="center">
+  <img src="Images/image001.png" height= auto width = 100%>
+</p>
 
 | Aspect | Approach and Specifications | Design Choice and Justification |
 | --- | --- | --- |
@@ -79,13 +84,19 @@ The design choice is a two-degree-of-freedom (2-DOF) tilting platform that allow
 
 Based on the design of the Tilting platform, the circuit diagram of the system was designed. The circuit diagram displays the interconnection of various electrical components within the maze-solving robot's system. It illustrates the power supply, signal paths, and connections between different input and output devices, providing an overview of the electrical layout. The system works by using a Raspberry Pi for high-level decision making and computer vision, and a PSOC for precise servo control, to tilt the platform and guide the ball through the maze based on visual feedback.
 
-![](Images/image007.png)
+<p align="center">
+  <img src="Images/image007.png" height= auto width = 100%>
+</p>
 
-![](Images/image009.png)
+<p align="center">
+  <img src="Images/image009.png" height= auto width = 100%>
+</p>
 
 The power supply for the system is specified as 12VDC, 5A, 65W using a power adapter. This is justified based on the power consumption of the components: the Dynamixel servos, each drawing a maximum of 1.5A at 11.1V, and the Raspberry Pi, which draws up to 3A at 5V, with the PSOC drawing negligible current. The total current draw is calculated as follows.
 
-![](Images/image011.png)
+<p align="center">
+  <img src="Images/image011.png" height= auto width = 100%>
+</p>
 
 This results in approximately 4.1A, which is well within the 5A capacity. Voltage regulators step down the 12V supply to 11.1V for the servos and 5V for the Raspberry Pi and PSOC, ensuring optimal operating voltages for all components.
 
@@ -130,7 +141,9 @@ The communication protocol used to communicate between the Raspberry Pi and PSOC
 
 In the scope of this project, the Raspberry Pi acts as the Master and the PSOC acts as the Slave. The data required to be sent is the target position of Servo 1 and Servo 2. Since the PSOC doesn’t need to send any information back to the Raspberry Pi, the MISO connection can be excluded. Below shows the pins connections used for the SPI Communication.
 
-![](Images/image019.png)
+<p align="center">
+  <img src="Images/image019.png" height= auto width = 50%>
+</p>
 
 | Wire | Raspberry Pi 4 | PSOC 5 |
 | --- | --- | --- |
@@ -174,8 +187,10 @@ To achieve half-duplex UART communication, the DATA pin functions as both a tran
 
 The communication protocol implemented in the PSOC for controlling the Dynamixel servo motors involves a series of predefined instructions and packet structures. These instructions are used to send commands and read responses from the servos.
 
-![](Images/image021.png)
-![](Images/image023.png)
+<p align="center">
+  <img src="Images/image021.png" height= 200 width = auto>
+  <img src="Images/image023.png" height= 200 width = auto>
+</p>
 
 | Function | Description | Packet Structure |
 | --- | --- | --- |
@@ -216,10 +231,12 @@ The ball is black, the floor is white, and the walls are red. Hence, the blue or
 
 Blob detection with 4-connectivity is performed. Next, aspect ratio and area-based filtering is performed to remove any falsely detected artifacts (if present). Finaly, the centre of the detected blob represents the ball's position, with the entire process taking less than 2 ms.
 
-![](Images/image029.jpg)
-![](Images/image031.jpg)
-![](Images/image033.jpg)
-![](Images/image035.jpg)
+<p align="center">
+  <img src="Images/image029.jpg" height= auto width = 24%>
+  <img src="Images/image031.jpg" height= auto width = 24%>
+  <img src="Images/image033.jpg" height= auto width = 24%>
+  <img src="Images/image035.jpg" height= auto width = 24%>
+</p>
 
 ### Maze Layout Detection
 
@@ -229,16 +246,23 @@ The system begins by capturing an image from the Raspberry Pi Camera with downsc
 
 Then a Gaussian blur is applied to the extracted RED channel to smoothen the image, reducing noise and minor variations. Next, adaptive thresholding is applied to the smoothed RED channel to generate a binary occupancy map. This process separates the maze walls (binary high) from the rest of the scene (binary low). Finaly, map Inflation applied to act as a buffer region between the ball and obstacles to increase the reliability that the path is safe and valid. The resulting binary occupancy map provides a clear distinction between the maze walls and the open paths, allowing for accurate navigation and control within the maze.
 
-![](Images/image039.jpg)
-![](Images/image041.jpg)
-![](Images/image043.jpg)
-![](Images/image045.jpg)
-![](Images/image047.jpg)
+
+<p align="center">
+  <img src="Images/image039.jpg" height= auto width = 19%>
+  <img src="Images/image041.jpg" height= auto width = 19%>
+  <img src="Images/image043.jpg" height= auto width = 19%>
+  <img src="Images/image045.jpg" height= auto width = 19%>
+  <img src="Images/image047.jpg" height= auto width = 19%>
+</p>
 
 
 ### Path Planning
 
-![](Images/image048.png)
+<p align="center">
+  <img src="Images/image048.png" height= auto width = 50%>
+</p>
+
+
 
 1. The goal point was added to the head of the tree, initializing the RRT\* algorithm with the goal position as the first node. After initialisation, obstacles within a set radius around the ball position are removed. This prevents the ball from being mistakenly considered an obstacle during path planning.
 2. A new node is then randomly generated within the valid region of the occupancy map. The nearest neighbour to this newly generated node is identified within the tree. The algorithm then checks if a direct path from the nearest node to the new node intersects any walls. If the path passes through an obstacle, the new node is discarded and the process of generating a new node is repeated.
@@ -253,8 +277,10 @@ This approach offers several benefits. By stopping when a path is found, the alg
 
 The goal position is set as the head of the tree instead of the ball’s position to ensure that the tree converges on the goal. This allows for recalculating the path to the same goal position using the existing tree if the ball deviates from its preplanned path. Furthermore, the RRT\* algorithm, with its inherent probabilistic completeness, guarantees that it will find a path to the goal given sufficient time and a feasible path. This property assures users that, with appropriate settings, the algorithm can reliably navigate various environments and obstacles.
 
-![](Images/image053.png)
-![](Images/image055.jpg)
+<p align="center">
+  <img src="Images/image053.png" height= auto width = 40%>
+  <img src="Images/image055.jpg" height= auto width = 40%>
+</p>
 
 ### Control Systems
 
@@ -269,14 +295,18 @@ The overview of the control loop to solve the maze is highlighted in the followi
 4. Based on the error calculated, a PID (Proportional-Integral-Derivative) control is used to determine the target servo position for both X and Y axes independently. The target servo position is then sent to the PSOC via SPI communication to control the servos.
 5. This loop is repeated until the ball reaches the goal position or is cancelled by the User via the user interface.
 
-![](Images/image056.png)
-![](Images/image058.png)
+<p align="center">
+  <img src="Images/image056.png" height= auto width = 40%>
+  <img src="Images/image058.png" height= auto width = 40%>
+</p>
 
 ### User Interface
 
 The graphical user interface is created as a Web-Based Interface using Flask, a Python web framework, along with HTML, CSS, and JavaScript. Being web-based, the system can be accessed from devices connected to the same Wi-Fi network, such as phones, laptops or any external device connected to Wi-Fi. The interface is designed to be intuitive and user-friendly, enhancing the user experience.
 
-![](Images/image060.png)
+<p align="center">
+  <img src="Images/image060.png" height= auto width = 60%>
+</p>
 
 | Feature            | Functionality                                                                                                                                                                                                                   |
 |--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -342,9 +372,11 @@ Overall, the system represents the integration of computer vision, path planning
 
 The system features Interchangeable Maze Designs. The system is designed to accept any maze configuration as long as the walls are red, and the dimensions are 15cm by 15cm by 3mm. The interchangeable design promotes creativity, allowing users to design and test their own maze configurations. This modular approach enhances user engagement and provides flexibility in testing different maze designs without hardware modifications.
 
-![](Images/image065.jpg)
-![](Images/image067.jpg)
-![](Images/image069.jpg)
+<p align="center">
+  <img src="Images/image065.jpg" height= auto width = 32%>
+  <img src="Images/image067.jpg" height= auto width = 32%>
+  <img src="Images/image069.jpg" height= auto width = 32%>
+</p>
 
 **Safety Mechanisms:**
 
@@ -440,3 +472,7 @@ Despite the project's success, several areas for improvement were identified.
 - Enhancing the system's portability with a battery pack and a foldable camera mount would increase its practicality for real-world applications.
 
 Overall, this project successfully designed and prototyped a flexible and user-friendly autonomous ball in maze solving robot. It shows potential for further improvements, such as more sophisticated controllers and portable designs.
+
+
+
+*Author: Avvienash Jaganathan*
