@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Solving Robot</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Maze Solving Robot</h1>
+    </header>
+
+    <div class="container">
+        <div class="left-section">
+            <img id="webcam-image" src="{{ url_for('video_feed') }}">
+        </div>
+
+        <div class="right-section">
+            <h2>Status: </h2>
+            <div id="status">{{ status }}</div>
+            <button id="generate-path-btn">Generate Path</button>
+            <button id="solve-btn">Solve</button>
+            <button id="cancel-btn">Cancel Run</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Function to fetch and update status from the server
+        function updateStatus() {
+            $.ajax({
+                url: '/get_status', // Route to get the status from the server
+                type: 'GET',
+                success: function(response) {
+                    // Update the status in the HTML
+                    $('#status').text(response.status);
+                },
+                error: function(error) {
+                    console.log('Error fetching status:', error);
+                }
+            });
+        }
+        // Call the updateStatus function every 2 seconds
+        setInterval(updateStatus, 200);
+    </script>
+</body>
+</html>
