@@ -1,4 +1,7 @@
-# Ball-In-Maze Solving Robot by Avvienash Jaganathan
+# Ball-In-Maze Solving Robot
+
+![](Images/image000.png)
+
 
 ## Summary
 
@@ -6,7 +9,33 @@ The Ball-in-Maze is a hand-eye coordination puzzle with the objective of manipul
 
 For the detailed explanations please refer to the full report.
 
+## Table of Contents
+
+- [Specifications and Approach](#specifications-and-approach)
+- [Summary of work completed](#summary-of-work-completed)
+  - [Research and Planning](#research-and-planning)
+  - [Maze Puzzle Design](#maze-puzzle-design)
+  - [Tilting Platform Design](#tilting-platform-design)
+  - [Electrical Circuit Design](#electrical-circuit-design)
+  - [Communication Protocols Raspberry Pi and PSOC](#communication-protocols-raspberry-pi-and-psoc)
+  - [Communication Protocols PSOC and Dynamixel](#communication-protocols-psoc-and-dynamixel)
+  - [Ball Localisation and Tracking](#ball-localisation-and-tracking)
+  - [Maze Layout Detection](#maze-layout-detection)
+  - [Path Planning](#path-planning)
+  - [Control Systems](#control-systems)
+  - [User Interface](#user-interface)
+- [Findings](#findings)
+  - [Final Bill of Materials (BOM)](#final-bill-of-materials-bom)
+  - [Final Product](#final-product)
+  - [Key features](#key-features)
+  - [Testing and Results](#testing-and-results)
+- [Conclusion](#conclusion)
+
+<!-- TABLE OF CONTENTS -->
+
 ## Specifications and Approach
+
+![](Images/image001.png)
 
 | Aspect | Approach and Specifications | Design Choice and Justification |
 | --- | --- | --- |
@@ -29,6 +58,8 @@ In the early stages of the project, thorough research and planning has been cond
 
 Before designing the system, the specification of the Maze Puzzle design and construction had to be finalised. This ensures that the system can be successfully built around the specified maze design.
 
+![](Images/image003.png)
+
 | Key Consideration | Approach |
 | --- | --- |
 | Interchangeable Mazes | The system is designed to accept any maze that meets the specified dimensions allowing for interchangeable mazes. |
@@ -40,13 +71,21 @@ Before designing the system, the specification of the Maze Puzzle design and con
 
 The design choice is a two-degree-of-freedom (2-DOF) tilting platform that allows controlled tilting along both the x and y axes. The servos are embedded in the frame similar to a 2-axis gimbal.
 
+![](Images/image005.png)
+
 <table><tbody><tr><th><p>Component</p></th><th><p>Construction, Functionality and Features</p></th></tr><tr><td><p>Base</p></td><td><p>Constructed from 6mm clear acrylic sheet. It has four corner holes with rubber feet for stability, and additional holes for servo mounts and brackets, all sized for M3 screws.</p></td></tr><tr><td><p>Servo Mount</p></td><td><p>Printed in ABS and attached to the base via M3 10mm screws and nuts. It features hexagon countersinks to lock the nut in place, ensuring a flush surface.</p></td></tr><tr><td><p>Brackets</p></td><td><p>Printed in ABS, these brackets serve as 90-degree joints for the supports, outer frame, inner frame, and camera mount. It also has hexagon countersinks to lock the nut in place, ensuring a flush surface.</p></td></tr><tr><td><p>Outer Frame</p></td><td><p>Constructed from four 6mm clear acrylic sheets, assembled with four brackets. Supported by the outer servo on one end and a bearing on the other, it tilts along the x-axis and supports the inner frame inside.</p></td></tr><tr><td><p>Inner Frame</p></td><td><p>Constructed from three stacked 3mm acrylic sheets. Attached to the inner servo on one end and to a shaft on a free-rotating bearing at the other end. The top acrylic layer acts as a border around the platform to snugly fit the maze, with openings on either side for easy removal or replacement.</p></td></tr><tr><td><p>Camera Mount</p></td><td><p>Constructed from two 3mm clear acrylic sheets mounted at 90 degrees via a bracket. The top plate has an opening with M2 holes to mount the camera facing down on the maze. It is directly connected to the inner frame, ensuring it remains perpendicular to the tilting platform, simplifying image processing. The total height from the Maze to the top of the camera mount is 16.5 cm, within the required height limit.</p></td></tr><tr><td><p>Miscellaneous</p></td><td><ul><li>M3 and M2 bolts and nuts for all joints and connections</li><li>Bearings for smooth rotation along the x and y axes</li><li>Rubber feet to support the base</li></ul></td></tr></tbody></table>
 
 ### Electrical Circuit Design
 
 Based on the design of the Tilting platform, the circuit diagram of the system was designed. The circuit diagram displays the interconnection of various electrical components within the maze-solving robot's system. It illustrates the power supply, signal paths, and connections between different input and output devices, providing an overview of the electrical layout. The system works by using a Raspberry Pi for high-level decision making and computer vision, and a PSOC for precise servo control, to tilt the platform and guide the ball through the maze based on visual feedback.
 
+![](Images/image007.png)
+
+![](Images/image009.png)
+
 The power supply for the system is specified as 12VDC, 5A, 65W using a power adapter. This is justified based on the power consumption of the components: the Dynamixel servos, each drawing a maximum of 1.5A at 11.1V, and the Raspberry Pi, which draws up to 3A at 5V, with the PSOC drawing negligible current. The total current draw is calculated as follows.
+
+![](Images/image011.png)
 
 This results in approximately 4.1A, which is well within the 5A capacity. Voltage regulators step down the 12V supply to 11.1V for the servos and 5V for the Raspberry Pi and PSOC, ensuring optimal operating voltages for all components.
 
@@ -91,6 +130,8 @@ The communication protocol used to communicate between the Raspberry Pi and PSOC
 
 In the scope of this project, the Raspberry Pi acts as the Master and the PSOC acts as the Slave. The data required to be sent is the target position of Servo 1 and Servo 2. Since the PSOC doesn’t need to send any information back to the Raspberry Pi, the MISO connection can be excluded. Below shows the pins connections used for the SPI Communication.
 
+![](Images/image019.png)
+
 | Wire | Raspberry Pi 4 | PSOC 5 |
 | --- | --- | --- |
 | Clock | GPIO 11 (SCLK) | Pin 2\[4\] |
@@ -133,6 +174,9 @@ To achieve half-duplex UART communication, the DATA pin functions as both a tran
 
 The communication protocol implemented in the PSOC for controlling the Dynamixel servo motors involves a series of predefined instructions and packet structures. These instructions are used to send commands and read responses from the servos.
 
+![](Images/image021.png)
+![](Images/image023.png)
+
 | Function | Description | Packet Structure |
 | --- | --- | --- |
 | LED_Control | Control the LED on the servo. | \[0xFF, 0xFF, ID, 4, 3, 25, Status, Checksum\] |
@@ -162,6 +206,8 @@ During integration with the entire system, the main function sets up UART and SP
 
 ### Ball Localisation and Tracking
 
+![](Images/image027.png)
+
 The system utilizes computer vision techniques on the image captured by the Raspberry Pi Camera to detect the ball position.
 
 The image resolution is reduced to 200x200 pixels to increase capturing speed, averaging about 1 ms. This is adequate given the maze size of 15x15 cm and the ball size of 9 mm. No additional preprocessing is required since the camera is always perpendicular to the platform.
@@ -170,13 +216,29 @@ The ball is black, the floor is white, and the walls are red. Hence, the blue or
 
 Blob detection with 4-connectivity is performed. Next, aspect ratio and area-based filtering is performed to remove any falsely detected artifacts (if present). Finaly, the centre of the detected blob represents the ball's position, with the entire process taking less than 2 ms.
 
+![](Images/image029.jpg)
+![](Images/image031.jpg)
+![](Images/image033.jpg)
+![](Images/image035.jpg)
+
 ### Maze Layout Detection
+
+![](Images/image038.png)
 
 The system begins by capturing an image from the Raspberry Pi Camera with downscaled resolution. Since the maze walls are red, the RED channel of the image is extracted. This isolates the walls from the rest of the scene.
 
 Then a Gaussian blur is applied to the extracted RED channel to smoothen the image, reducing noise and minor variations. Next, adaptive thresholding is applied to the smoothed RED channel to generate a binary occupancy map. This process separates the maze walls (binary high) from the rest of the scene (binary low). Finaly, map Inflation applied to act as a buffer region between the ball and obstacles to increase the reliability that the path is safe and valid. The resulting binary occupancy map provides a clear distinction between the maze walls and the open paths, allowing for accurate navigation and control within the maze.
 
+![](Images/image039.jpg)
+![](Images/image041.jpg)
+![](Images/image043.jpg)
+![](Images/image045.jpg)
+![](Images/image047.jpg)
+
+
 ### Path Planning
+
+![](Images/image048.png)
 
 1. The goal point was added to the head of the tree, initializing the RRT\* algorithm with the goal position as the first node. After initialisation, obstacles within a set radius around the ball position are removed. This prevents the ball from being mistakenly considered an obstacle during path planning.
 2. A new node is then randomly generated within the valid region of the occupancy map. The nearest neighbour to this newly generated node is identified within the tree. The algorithm then checks if a direct path from the nearest node to the new node intersects any walls. If the path passes through an obstacle, the new node is discarded and the process of generating a new node is repeated.
@@ -191,6 +253,9 @@ This approach offers several benefits. By stopping when a path is found, the alg
 
 The goal position is set as the head of the tree instead of the ball’s position to ensure that the tree converges on the goal. This allows for recalculating the path to the same goal position using the existing tree if the ball deviates from its preplanned path. Furthermore, the RRT\* algorithm, with its inherent probabilistic completeness, guarantees that it will find a path to the goal given sufficient time and a feasible path. This property assures users that, with appropriate settings, the algorithm can reliably navigate various environments and obstacles.
 
+![](Images/image053.png)
+![](Images/image055.jpg)
+
 ### Control Systems
 
 The overview of the control loop to solve the maze is highlighted in the following steps.
@@ -204,9 +269,14 @@ The overview of the control loop to solve the maze is highlighted in the followi
 4. Based on the error calculated, a PID (Proportional-Integral-Derivative) control is used to determine the target servo position for both X and Y axes independently. The target servo position is then sent to the PSOC via SPI communication to control the servos.
 5. This loop is repeated until the ball reaches the goal position or is cancelled by the User via the user interface.
 
+![](Images/image056.png)
+![](Images/image058.png)
+
 ### User Interface
 
 The graphical user interface is created as a Web-Based Interface using Flask, a Python web framework, along with HTML, CSS, and JavaScript. Being web-based, the system can be accessed from devices connected to the same Wi-Fi network, such as phones, laptops or any external device connected to Wi-Fi. The interface is designed to be intuitive and user-friendly, enhancing the user experience.
+
+![](Images/image060.png)
 
 | Feature            | Functionality                                                                                                                                                                                                                   |
 |--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -271,6 +341,10 @@ Overall, the system represents the integration of computer vision, path planning
 **Modularity and User Experience:**
 
 The system features Interchangeable Maze Designs. The system is designed to accept any maze configuration as long as the walls are red, and the dimensions are 15cm by 15cm by 3mm. The interchangeable design promotes creativity, allowing users to design and test their own maze configurations. This modular approach enhances user engagement and provides flexibility in testing different maze designs without hardware modifications.
+
+![](Images/image065.jpg)
+![](Images/image067.jpg)
+![](Images/image069.jpg)
 
 **Safety Mechanisms:**
 
