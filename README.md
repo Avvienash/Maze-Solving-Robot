@@ -12,6 +12,12 @@ The Ball-in-Maze is a hand-eye coordination puzzle with the objective of manipul
 
 For the detailed explanations please refer to the full report.
 
+
+## Demo Video
+
+https://github.com/Avvienash/Maze-Solving-Robot/assets/66234703/1e7a9965-980b-430a-a04a-20146ce0331e
+
+
 ## Table of Contents
 
 - [Specifications and Approach](#specifications-and-approach)
@@ -391,12 +397,6 @@ The system uses a straightforward circuit design with minimal wiring, only three
 ### Testing and Results
 
 To ensure the consistency and reliability of the autonomous ball in maze solving robot system, rigorous testing was conducted across various conditions and scenarios. The testing process included ball detection, maze layout detection, path planning and maze solving.
-
-
-
-https://github.com/Avvienash/Maze-Solving-Robot/assets/66234703/1e7a9965-980b-430a-a04a-20146ce0331e
-
-
 
 **Ball Detection Testing:**
 
