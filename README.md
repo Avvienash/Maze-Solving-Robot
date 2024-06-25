@@ -208,18 +208,19 @@ The overview of the control loop to solve the maze is highlighted in the followi
 
 The graphical user interface is created as a Web-Based Interface using Flask, a Python web framework, along with HTML, CSS, and JavaScript. Being web-based, the system can be accessed from devices connected to the same Wi-Fi network, such as phones, laptops or any external device connected to Wi-Fi. The interface is designed to be intuitive and user-friendly, enhancing the user experience.
 
-| Feature |     | Functionality |
-| --- |     | --- | --- |
-| Live Video Feed |     | Provides a live video feed from the camera at 30 frames per second (fps) for real-time monitoring. Users can click anywhere on the screen to select the goal position, ensuring ease of interaction. |
-| Status Display | Ready | Indicates that the system is ready and waiting for user input. |
-| No Ball Detected | Alerts the user when no ball is detected in the maze. This status ensures that the system does not proceed without the required input. |
-| Generating Path | The system is calculating the optimal path based on the selected goal position. |
-| Plotting Path | Displays the calculated path overlaying the live video feed, providing users with a visual representation of the planned route. |
-| Solving Maze | The system is actively controlling the ball to navigate through the maze towards the goal position. Users can observe the live movement of the ball as it progresses towards the goal. |
-| Reached Goal | The ball successfully reaches the goal position, marking the completion of the maze-solving task. |
-| Action Buttons | Generate Path | Generates the optimal path based on the selected goal position using the RRT\* algorithm. |
-| Solve | Begins solving the maze by controlling the ball to navigate towards the goal position. |
-| Cancel Run | Allows the user to cancel the current operation or run, providing an option to stop the maze-solving process if needed. |
+| Feature            | Functionality                                                                                                                                                                                                                   |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Live Video Feed    | Provides a live video feed from the camera at 30 frames per second (fps) for real-time monitoring. Users can click anywhere on the screen to select the goal position, ensuring ease of interaction.                               |
+| Status Display     | Indicates that the system is ready and waiting for user input.                                                                                                                                                                  |
+| No Ball Detected   | Alerts the user when no ball is detected in the maze, preventing the system from proceeding without the required input.                                                                                                       |
+| Generating Path    | The system is calculating the optimal path based on the selected goal position.                                                                                                                                                 |
+| Plotting Path      | Displays the calculated path overlaying the live video feed, providing users with a visual representation of the planned route.                                                                                                 |
+| Solving Maze       | The system is actively controlling the ball to navigate through the maze towards the goal position. Users can observe the live movement of the ball as it progresses towards the goal.                                       |
+| Reached Goal       | Indicates when the ball successfully reaches the goal position, marking the completion of the maze-solving task.                                                                                                                                |
+| Generate Path      | Generates the optimal path based on the selected goal position using the RRT\* algorithm.                                                                                                                                        |
+| Solve              | Initiates the maze-solving process by controlling the ball to navigate towards the goal position.                                                                                                                               |
+| Cancel Run         | Allows the user to cancel the current operation or run, providing an option to stop the maze-solving process if needed.                                                                                                         |
+
 
 ## Findings
 
@@ -289,12 +290,17 @@ To ensure the consistency and reliability of the autonomous ball in maze solving
 
 Ball detection capabilities were evaluated under different lighting conditions and random platform orientations. The testing involved 20 runs each for scenarios with and without the ball, assessing the system's ability to accurately detect the ball.
 
-| Lighting Condition | With ball |     |     | Without ball |     |
-| --- | --- |     |     | --- |     | --- | --- | --- |
-| Ball Detected Correctly (True Detection) | Ball Detected Incorrectly (False Detection) | No ball Detected (False Detection) | No ball Detected (True Detection) | Ball Detected (False Detection) |
-| Controlled Lighting (Robotics Lab) | 100% | 0%  | 0%  | 100% | 0%  |
-| Indoor Lighting (Sir Louis Matheson Library) | 100% | 0%  | 5%  | 100% | 0%  |
-| Outdoor Lighting (Monash Clayton Campus Outdoor Bench with power outlet) | 65% | 25% | 10% | 70% | 30% |
+| Lighting Condition                                         | With Ball                                | Without Ball                             |
+|------------------------------------------------------------|------------------------------------------|------------------------------------------|
+| ---                                                        | Ball Detected Correctly (True Detection) | Ball Detected Incorrectly (False Detection) |
+| Controlled Lighting (Robotics Lab)                          | 100%                                     | 0%                                       |
+| Indoor Lighting (Sir Louis Matheson Library)                | 100%                                     | 5%                                       |
+| Outdoor Lighting (Monash Clayton Campus Outdoor Bench)      | 65%                                      | 10%                                      |
+| ---                                                        | No Ball Detected (False Detection)       | No Ball Detected (True Detection)        |
+| Controlled Lighting (Robotics Lab)                          | 0%                                       | 100%                                     |
+| Indoor Lighting (Sir Louis Matheson Library)                | 0%                                       | 100%                                     |
+| Outdoor Lighting (Monash Clayton Campus Outdoor Bench)      | 25%                                      | 70%                                      |
+
 
 The results indicate good ball detection performance under controlled and indoor lighting conditions. However, outdoor lighting poses challenges, with reduced accuracy due to environmental factors. It is important to note that outdoor lighting is limited to areas with wall outlets which is a limitation and will be addressed.
 
